@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block styleCode %}
+
+.navbar{
+
+    height: 10vh;
+    width: 100%;
+    position: fixed;
+    top: 0vh;
+    z-index: 10;
+    background-color: rgb(9, 97, 12);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2vw;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    }
+    
+    .navbar h3{
+    color: aliceblue;
+    }
+    
+    .nav-options{
+    display: flex;
+    gap: 20px;
+    }
+    
+    .nav-options a{
+    color: rgb(209, 210, 211);
+    text-decoration: none;
+    cursor: pointer;
+    }
+    
+    .nav-options a:hover{
+    color: aliceblue;
+    }
+    
+            .all-transactions-page{
+        width: 100%;
+        height: 100vh;
+        padding-top: 13vh;
+        padding-left: 3vw
+    }
+    .all-transactions-page h2{
+        margin-bottom: 4vh;
+        color: rgba(77, 109, 134, 0.934);
+    }
+    
+    .transactions-body{
+        width: 70%;
+        height: 85%;
+        overflow-y: scroll;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        display: flex;
+        flex-direction: column;
+    
+    
+    }
+    .transactions-body::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .transaction{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        background-color: rgba(239, 245, 245, 0.477);
+        border: 1px solid #97a0b334;
+        padding: 1.5vh 2vw;
+        border-radius: 0.8rem;
+        margin-bottom:10px;
+    }
+    
+    .transaction span{
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .transaction span p{
+        margin: 0;
+        font-size: 0.9rem;
+        color: rgb(25, 74, 107);
+        display: flex;
+        gap: 10px;
+    }
+    
+    .transaction span p b{
+        font-weight: 600;
+        color: rgb(108, 133, 149);
+    }
+    
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="navbar">
+    <h3 >SB Bank (Admin)</h3>
+    <div class="nav-options" >
+
+        <a href="/adminHome">Home</a>
+        <a href="/allUsers">Users</a>
+        <a href="/adminDeposits">Deposits</a>
+        <a href="/adminLoans">Loans</a>
+        <a href="/adminTransactions">Transactions</a>
+        <a href="#" id="logoutBtn" >Logout</a>
+    </div>
+</div>
+
+<script>
+
+    const myLink = document.getElementById('logoutBtn');
+
+    myLink.addEventListener('click', function(event) {
+        event.preventDefault();
+
+         localStorage.clear();
+        for (let key in localStorage) {
+          if (localStorage.hasOwnProperty(key)) {
+            localStorage.removeItem(key);
+          }
+        }
+        window.location.href = '/';
+
+    });
+</script>
+
+
+
+<div class="all-transactions-page">
+
+    <h2>All Transactions</h2>
+
+    <div class="transactions-body">
+        {% for transaction in transactions %}
+        <div>
+            <div class="transaction"   >
+                <span>
+                    <p><b>Amount: </b><span >{{transaction.amount}}</span></p>
+                    <p><b>Receiver: </b><span >{{transaction.receiverName}}</span></p>
+                    <p><b>Receiver's a/c id: </b><span >{{transaction.receiverId}}</span></p>
+                </span>
+                <span>
+                    <p><b>Sender: </b> <span >{{transaction.senderName}}</span></p>
+                    <p><b>Sender's a/c id: </b> <span >{{transaction.senderId}}</span> </p>
+                    <p><b>Time: </b> <span >{{transaction.time}}</span> </p>
+                </span>
+            </div>
+        </div>
+        {% endfor %}
+
+
+    </div>
+</div>
+
+
+{% endblock %}

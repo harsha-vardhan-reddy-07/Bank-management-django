@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block styleCode %}
+
+nav{
+    width: 90%;
+    height: 10vh;
+    margin-left: 5%;
+    position: fixed;
+    top: 1rem;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgba(255, 255, 255, 1);
+    padding: 0 3%;
+    backdrop-filter: blur(10px);
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    border-radius: 3rem;
+}
+
+nav h3{
+    margin: 0px;
+    padding: 0px;
+    cursor: pointer;
+    color: rgb(48, 127, 14);
+}
+
+nav .nav-options{
+    display: flex;
+    gap: 30px;
+}
+nav .nav-options a{
+    font-size: 1.2rem;
+    margin: 0px;
+    padding: 0px;
+    cursor: pointer;
+    color: rgb(70, 152, 64);
+    text-decoration: none;
+}
+nav .nav-options a:hover{
+
+    color: rgb(92, 186, 86);
+    /* font-weight: 500; */
+
+}
+
+.auth-component{
+width: 30%;
+margin-left: 35%;
+margin-top: 20vh;
+text-align: center;
+/* border: 1px solid #757474; */
+padding: 3vh 1.5vw;
+border-radius: 0.7rem;
+box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;
+display: flex;
+flex-direction: column;
+}
+
+.auth-component h3{
+color: #76acd7;
+margin-bottom: 3vh;
+}
+
+.auth-component input{
+
+outline: none;
+}
+
+
+.auth-component label{
+
+color: #426078;
+}
+
+.profilePicDiv{
+text-align: left;
+ 
+}
+
+.profilePicDiv label{
+text-align: left;
+}
+
+.auth-component button{
+min-width: 35%;
+
+}
+
+.auth-component span{
+
+display: flex;
+justify-content: space-between;
+margin-top: 20px;
+}
+
+.auth-component span a{
+
+color: #76acd7;
+cursor: pointer;
+}
+
+
+{% endblock %}
+
+
+{% block content %}
+
+
+{% if isLogged %}
+    <script>
+        alert("You are already logged in successfully!!");
+        localStorage.setItem("isLogged", true);
+        localStorage.setItem("userId", "{{data.userId}}");
+        localStorage.setItem("username", "{{data.username}}");
+        localStorage.setItem("email", "{{data.email}}");
+        localStorage.setItem("userType", "{{data.userType}}");
+
+        window.location.href = "/loadHome";
+        
+    </script>
+{% endif %}
+
+{% if error %}
+<script>
+
+    alert("{{error}}")
+    setTimeout(() => {
+        window.location.href = "/login";
+    }, 2000);
+
+</script>
+{% endif %}
+
+
+<div class="auth-page">
+
+    <nav>
+        <h3>SB Bank</h3>
+        <div class="nav-options">
+            <a href="/">Home</a>
+            <a href="/login">Join now</a>
+        </div>
+    </nav>
+
+
+
+    <div class="auth-component" >
+
+        <h3>Sign Up(admin)</h3>
+
+        <form id="registerForm"  method="post">
+
+            {% csrf_token %}   
+
+            <div class="form-floating mb-3">
+                {{ form.username }}
+                <label for="floatingInputauth11">Username</label>
+            </div>
+            <div class="form-floating mb-3">
+                {{ form.email }}
+                <label for="floatingInputauth4">Email address</label>
+            </div>
+            <div class="form-floating mb-3">
+                {{ form.password }}
+                <label for="floatingInputauth5">Password</label>
+            </div>
+
+            <button id="adminRegisterForm" class='btn btn-primary' type="submit" >Register</button>
+            <span>
+                <a href="/register">Registration</a>
+                <a href="/login">Login</a>
+            </span>
+
+        </form>
+    </div>
+
+</div>
+
+
+
+{% endblock %}

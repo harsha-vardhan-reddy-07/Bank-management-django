@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block styleCode %}
+
+.navbar{
+
+    height: 10vh;
+    width: 100%;
+    position: fixed;
+    top: 0vh;
+    z-index: 10;
+    background-color: rgb(9, 97, 12);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2vw;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.navbar h3{
+    color: aliceblue;
+}
+
+.nav-options{
+    display: flex;
+    gap: 20px;
+}
+
+.nav-options a{
+    color: rgb(209, 210, 211);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.nav-options a:hover{
+    color: aliceblue;
+}
+
+        .admin-page{
+
+    height: 100vh;
+    padding-top: 13vh;
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-template-rows: 30vh 30vh;
+    gap: 30px;
+    justify-content: center;
+    align-items: center;
+    row-gap: 30px !important;
+}
+
+.admin-card{
+
+    padding: 3vh 2vw;
+    text-align: center;
+    width: 20vw;
+    height: 150px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.admin-card:hover{
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}
+
+.admin-card h4{
+    margin: 0;
+
+}
+
+.admin-card p{
+
+    margin: 0;
+}
+
+.admin-card button{
+
+
+}
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="navbar">
+    <h3 >SB Bank (Admin)</h3>
+    <div class="nav-options" >
+        <a href="/adminHome">Home</a>
+        <a href="/allUsers">Users</a>
+        <a href="/adminDeposits">Deposits</a>
+        <a href="/adminLoans">Loans</a>
+        <a href="/adminTransactions">Transactions</a>
+        <a href="#" id="logoutBtn" >Logout</a>
+    </div>
+</div>
+
+<script>
+
+    const myLink = document.getElementById('logoutBtn');
+
+    myLink.addEventListener('click', function(event) {
+        event.preventDefault();
+
+         localStorage.clear();
+        for (let key in localStorage) {
+          if (localStorage.hasOwnProperty(key)) {
+            localStorage.removeItem(key);
+          }
+        }
+        window.location.href = '/';
+
+    });
+</script>
+
+
+<div class="admin-page">
+
+    <div class="card admin-card users-card">
+        <h4>Users</h4>
+        <p >{{users}}</p>
+        <a class="btn btn-primary" href="/allUsers">View all</a>
+    </div>
+
+    <div class="card admin-card transactions-card">
+        <h4>Transactions</h4>
+        <p >{{transactions}}</p>
+        <a class="btn btn-primary" href="/adminTransactions">View all</a>
+    </div>
+
+    <div class="card admin-card deposits-card">
+        <h4>Deposits</h4>
+        <p >{{deposits}}</p>
+        <a class="btn btn-primary" href="/adminDeposits">View all</a>
+    </div>
+
+    <div class="card admin-card loans-card">
+        <h4>Loans</h4>
+        <p>{{loans}}</p>
+        <a class="btn btn-primary" href="/adminLoans">View all</a>
+    </div>
+
+</div>
+
+
+{% endblock %}

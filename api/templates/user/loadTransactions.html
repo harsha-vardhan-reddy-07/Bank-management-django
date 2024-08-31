@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block styleCode %}
+
+
+
+{% endblock %}
+
+
+{% block content %}
+
+<script>
+
+    const user = localStorage.getItem('userId');
+
+    window.location.href = `/transactions/${user}`;
+
+</script>
+
+{% endblock %}

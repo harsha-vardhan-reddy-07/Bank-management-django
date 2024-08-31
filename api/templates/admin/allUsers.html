@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block styleCode %}
+
+.navbar{
+
+    height: 10vh;
+    width: 100%;
+    position: fixed;
+    top: 0vh;
+    z-index: 10;
+    background-color: rgb(9, 97, 12);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2vw;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.navbar h3{
+    color: aliceblue;
+}
+
+.nav-options{
+    display: flex;
+    gap: 20px;
+}
+
+.nav-options a{
+    color: rgb(209, 210, 211);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.nav-options a:hover{
+    color: aliceblue;
+}
+
+        .all-users-page{
+    width: 100%;
+    height: 100vh;
+    padding-top: 13vh;
+    padding-left: 3vw
+}
+.all-users-page h2{
+    margin-bottom: 4vh;
+    color: rgba(77, 109, 134, 0.934);
+}
+
+
+.all-users{
+    width: 80%;
+    height: 75vh;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.all-users::-webkit-scrollbar {
+    display: none;
+}
+
+.all-users .user{
+    width: 80%;
+    background-color: rgba(231, 239, 236, 0.416);
+    border-radius: 0.8rem;
+    display: flex;
+    padding: 2vh 2vw;
+    gap: 2vw;
+}
+.all-users .user p{
+
+    margin: 0;
+    color: rgb(36, 132, 173);
+}
+.all-users .user p b{
+    font-weight: 600;
+    color: rgb(32, 97, 124);
+}
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="navbar">
+    <h3 >SB Bank (Admin)</h3>
+    <div class="nav-options" >
+
+        <a href="/adminHome">Home</a>
+        <a href="/allUsers">Users</a>
+        <a href="/adminDeposits">Deposits</a>
+        <a href="/adminLoans">Loans</a>
+        <a href="/adminTransactions">Transactions</a>
+        <a href="#" id="logoutBtn" >Logout</a>
+    </div>
+</div>
+
+<script>
+
+    const myLink = document.getElementById('logoutBtn');
+
+    myLink.addEventListener('click', function(event) {
+        event.preventDefault();
+
+         localStorage.clear();
+        for (let key in localStorage) {
+          if (localStorage.hasOwnProperty(key)) {
+            localStorage.removeItem(key);
+          }
+        }
+        window.location.href = '/';
+
+    });
+</script>
+
+
+<div class="all-users-page">
+    <h2>All users</h2>
+    <div class="all-users">
+        {% for user in users %}
+        <div class="user" >
+            <p><b>Username: </b><span >{{user.username}}</span></p>
+            <p><b>Id: </b><span >{{user.id}}</span></p>
+            <p><b>Email: </b><span >{{user.email}}</span></p>
+            <p><b>Balance: </b><span >{{user.balance}}</span></p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

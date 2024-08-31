@@ -1,0 +1,274 @@
+{% extends "base.html" %}
+
+{% block styleCode %}
+
+.navbar{
+
+    height: 10vh;
+    width: 100%;
+    position: fixed;
+    top: 0vh;
+    z-index: 10;
+    background-color: rgb(9, 97, 12);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2vw;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.navbar h3{
+    color: aliceblue;
+}
+
+.nav-options{
+    display: flex;
+    gap: 20px;
+}
+
+.nav-options a{
+    color: rgb(209, 210, 211);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.nav-options a:hover{
+    color: aliceblue;
+}
+ .home-page{
+    width: 100%;
+    height: fit-content;
+    padding: 13vh 0 5vh 0;
+}
+
+
+.home-body{
+
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    margin-top: 2vh;
+
+}
+
+.home-container1{
+    width: 100%;
+    display: flex;
+
+}
+
+.balance-container{
+
+    width: 40%;
+    margin-left: 5%;
+    height: fit-content;
+    background-color: rgba(211, 239, 229, 0.527);
+    backdrop-filter: blur(15px);
+    text-align: center;
+    padding: 4vh 2vw;
+    border-radius: 1.3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+
+}
+
+.balance-container:hover{
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+
+.balance-container h4{
+
+    color: rgb(78, 113, 135);
+    margin: 0;
+    font-size: 1.3rem;
+}
+.balance-container h5{
+
+    color: rgb(78, 113, 135);
+    margin: 0;
+}
+.balance-container p{
+
+    color: rgb(20, 161, 74);
+    font-size: 1.1rem;
+    margin: 0;
+    display: flex;
+}
+.balance-container span{
+
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.send-money-container{
+
+    width: 40%;
+    margin-left: 5%;
+    background-color: rgba(211, 239, 229, 0.527);
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    border-radius: 1.3rem;
+
+}
+.send-money-container form{
+    padding: 3vh 2vw;
+}
+
+.send-money-container form h4{
+    text-align: center;
+    color: rgb(70, 114, 145);
+}
+.send-money-container form input{
+    background-color: rgba(255, 255, 255, 0.79);
+}
+.send-money-container form label{
+    color: rgb(27, 64, 92);
+}
+.send-money-container form button{
+    width: 30%;
+    margin-left: 35%;
+}
+
+
+
+{% endblock %}
+
+
+{% block content %}
+
+
+{% if paymentSuccess %}
+
+    <script>
+        alert('Payment successful')
+        setTimeout(() => {
+            window.location.href = '/home';
+        }, 2000);
+
+    </script>
+
+
+{% endif %}
+
+
+<div class="navbar">
+    <h3>SB Bank</h3>
+    <div class="nav-options">
+        <a id="navUser" href="/home">Home</a>
+        <a id="navDeposit" href="/deposits">Deposits</a>
+        <a id="navLoan" href="/loans">Loans</a>
+        <a id="navTransaction" href="/transactions">Transactions</a>
+        <a href="#" id="logoutBtn" >Logout</a>
+    </div>
+</div>
+
+
+
+<script>
+
+    const myLink = document.getElementById('logoutBtn');
+
+    myLink.addEventListener('click', function(event) {
+        event.preventDefault();
+
+         localStorage.clear();
+        for (let key in localStorage) {
+          if (localStorage.hasOwnProperty(key)) {
+            localStorage.removeItem(key);
+          }
+        }
+        window.location.href = '/';
+
+    });
+</script>
+
+
+
+
+
+
+
+
+<div class="home-page">
+
+    <div class="home-body">
+        <div class="home-container1">
+
+            <div class="balance-container">
+                <span>
+                    <h4>Account balance</h4>
+                    <p>&#8377; <span >{{user.balance}}</span></p>
+                </span>
+                <span>
+                    <h5>User</h5>
+                    <p><span id="homeUsername">{{user.username}}</span></p>
+                </span>
+                <span>
+                    <h5>Account Id</h5>
+                    <p><span id="homeACID">{{user.id}}</span></p>
+                </span>
+                <span>
+                    <h5>Home Branch</h5>
+                    <p><span id="homeBranch">{{user.homeBranch}}</span></p>
+                </span>
+                <span>
+                    <h5>IFSC Code</h5>
+                    <p><span id="homeIFSC">{{user.IFSCCode}}</span></p>
+                </span>
+
+
+            </div>
+
+
+
+
+            <div class="send-money-container">
+
+                <form id="sendMoneyForm" method="post" >
+
+                    {% csrf_token %}
+
+                    <h4>Send money</h4>
+
+                    {{ form.senderId }}
+                    {{ form.senderName }}
+
+                    <div class="form-floating mb-3">
+                        {{ form.receiverId }}
+                        <label for="receiverId" class="form-label">Receiver's a/c id</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        {{ form.receiverIFSC }}
+                        <label for="receiverIFSC" class="form-label">Receiver's IFSC</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        {{ form.amount }}
+                        <label for="sendAmount" class="form-label">Amount</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        {{ form.paymentMethod }}
+                        <label for="paymentMethod" class="form-label">Payment method</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        {{ form.remarks }}
+                        <label for="remarks" class="form-label">Remarks</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary" >Send</button>
+                </form>
+
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+
+
+
+
+
+
+{% endblock %}

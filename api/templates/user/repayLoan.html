@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+{% if success %}
+<script>
+    alert("Repayment successfully");
+    window.location.href = '/loans';
+</script>
+
+{% else %}
+
+<script>
+    alert("Repayment failed");
+    window.location.href = '/loans';
+</script>
+
+{% endif %}
+
+
+{% endblock %}
